@@ -14,35 +14,35 @@ class EmailTemplateTypeTableSeeder extends Seeder
     public function run()
     {
         if (env('DB_CONNECTION') == 'mysql') {
-            DB::table(config('access.email_template_types_table'))->truncate();
+            DB::table(config('module.email_templates.types_table'))->truncate();
         }
 
         $data = [
             [
-                'name'              => 'Registration',
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'name'       => 'Registration',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
 
             [
-                'name'              => 'Create User',
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'name'       => 'Create User',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
 
             [
-                'name'              => 'Acivate / Deactivate User',
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'name'       => 'Acivate / Deactivate User',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
 
             [
-                'name'              => 'Change Password',
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
+                'name'       => 'Change Password',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ];
 
-        DB::table(config('access.email_template_types_table'))->insert($data);
+        DB::table(config('module.email_templates.types_table'))->insert($data);
     }
 }

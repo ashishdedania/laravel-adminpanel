@@ -1,72 +1,63 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Api\V1\Requests\ConfirmAccountRequest;
-use App\Api\V1\Requests\RegisterRequest;
-use App\Http\Controllers\Controller;
-use App\Repositories\Api\User\UserRepository;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Models\User\User;
+use App\Repositories\Frontend\Access\User\UserRepository;
+use Config;
+use Illuminate\Http\Request;
+use JWTAuth;
+use Validator;
 
-/**
- * Class RegisterController.
- */
-class RegisterController extends Controller
+class RegisterController extends APIController
 {
-    /**
-     * @var UserRepository
-     */
-    protected $user;
+    protected $repository;
 
     /**
-     * RegisterController constructor.
+     * __construct.
      *
-     * @param UserRepository $user
+     * @param $repository
      */
-    public function __construct(UserRepository $user)
+    public function __construct(UserRepository $repository)
     {
-        $this->user = $user;
+        $this->repository = $repository;
     }
 
-    /*
-    * Register api.
-    */
-    public function Register(RegisterRequest $request)
+    /**
+     * Register User.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
     {
-        $user = $this->user->create($request->all());
+        $validation = Validator::make($request->all(), [
+            'first_name'            => 'required',
+            'last_name'             => 'required',
+            'email'                 => 'required|email|unique:users',
+            'password'              => 'required|min:4',
+            'password_confirmation' => 'required|same:password',
+            'is_term_accept'        => 'required',
+        ]);
 
-        return response()
-                    ->json([
-                    'status' => 'ok',
-                    ]);
-    }
-
-    /*
-    * Confirm account api
-    */
-    public function confirmAccount(ConfirmAccountRequest $request)
-    {
-        $user = $this->user->checkUser($request->get('email'));
-        if (!(empty($user))) {
-            if ($user[0]['confirmation_code'] != '') {
-                if (md5($request->get('otp')) == $user[0]['confirmation_code']) {
-                    $checkconfirmation = $this->user->checkconfirmation($request->get('email'));
-                    if ($checkconfirmation[0]['confirmed'] == 0) {
-                        $confirmuser = $this->user->confirmUser($request->get('email'));
-                    } else {
-                        throw new HttpException(500, trans('validation.api.confirmaccount.already_confirmed'));
-                    }
-                } else {
-                    throw new HttpException(500, trans('validation.api.confirmaccount.invalid_otp'));
-                }
-            }
-        } else {
-            throw new HttpException(500, trans('validation.api.confirmaccount.invalid_email'));
+        if ($validation->fails()) {
+            return $this->throwValidation($validation->messages()->first());
         }
 
-        return response()
-                ->json([
-                'status' => 'ok',
-                ]);
+        $user = $this->repository->create($request->all());
+
+        if (!Config::get('api.register.release_token')) {
+            return $this->respondCreated([
+                'message'  => trans('api.messages.registeration.success'),
+            ]);
+        }
+
+        $token = JWTAuth::fromUser($user);
+
+        return $this->respondCreated([
+            'message'   => trans('api.messages.registeration.success'),
+            'token'     => $token,
+        ]);
     }
 }

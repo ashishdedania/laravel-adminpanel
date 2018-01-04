@@ -12,7 +12,7 @@
 @section('content')
     {{ Form::model($role, ['route' => ['admin.access.role.update', $role], 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'PATCH', 'id' => 'edit-role']) }}
 
-        <div class="box box-success">
+        <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('labels.backend.access.roles.edit') }}</h3>
 
@@ -47,7 +47,7 @@
                                     @if ($permissions->count())
                                         @foreach ($permissions as $perm)
                                         <label class="control control--checkbox">
-                                            <input type="checkbox" name="permissions[{{ $perm->id }}]" value="{{ $perm->id }}" id="perm_{{ $perm->id }}" {{ is_array(old('permissions')) ? (in_array($perm->id, old('permissions')) ? 'checked' : '') : (in_array($perm->id, $role_permissions) ? 'checked' : '') }} /> <label for="perm_{{ $perm->id }}">{{ $perm->display_name }}</label>
+                                            <input type="checkbox" name="permissions[{{ $perm->id }}]" value="{{ $perm->id }}" id="perm_{{ $perm->id }}" {{ is_array(old('permissions')) ? (in_array($perm->id, old('permissions')) ? 'checked' : '') : (in_array($perm->id, $rolePermissions) ? 'checked' : '') }} /> <label for="perm_{{ $perm->id }}">{{ $perm->display_name }}</label>
                                             <div class="control__indicator"></div>
                                             </label>
                                             <br/>
@@ -82,7 +82,7 @@
     {{ Html::script('js/backend/access/roles/script.js') }}
     <script type="text/javascript">
         $(document).ready(function() {
-            FinBuilders.Access.init();
+            Backend.Access.init();
         });
     </script>
 @endsection

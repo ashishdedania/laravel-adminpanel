@@ -9,7 +9,7 @@ namespace App\Http\Utilities;
  *
  * Notification class is a abstract class for send push notification in Android and iPhone mobile
  *
- * Author  Sandip P. Joshi
+ * Author  Viral Solani
  *
  * Version 1.0
  *
@@ -101,7 +101,7 @@ abstract class Notification
     */
     public function setOptions(array $options)
     {
-        foreach ($options as $optionKey=>$option) {
+        foreach ($options as $optionKey => $option) {
             $methodName = 'set'.ucfirst($optionKey);
             $propertyName = '_'.$optionKey;
             if (method_exists($methodName, $this)) {

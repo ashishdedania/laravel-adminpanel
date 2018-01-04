@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Access\Permission\Permission;
 use App\Models\Access\Role\Role;
 use App\Models\Access\User\User;
-use App\Models\Cities\City;
-use App\Models\States\State;
 use Illuminate\Http\Request;
 
 /**
@@ -24,47 +22,13 @@ class DashboardController extends Controller
     }
 
     /**
-     * Used to get the states of default country.
-     *
-     * @param Request $request
-     *
-     * @return JSON
-     */
-    public function getStates(Request $request)
-    {
-        $states = State::where('country_id', config('access.constants.default_country'))->pluck('state', 'id')->toArray();
-
-        return [
-                'status' => 'state',
-                'data'   => $states,
-            ];
-    }
-
-    /**
-     * Used to get the cities of selected state.
-     *
-     * @param Request $request
-     *
-     * @return JSON
-     */
-    public function getCities(Request $request)
-    {
-        $cities = City::where('state_id', $request->stateId)->pluck('city', 'id')->toArray();
-
-        return [
-                'status' => 'city',
-                'data'   => $cities,
-            ];
-    }
-
-    /**
      * Used to display form for edit profile.
      *
      * @return view
      */
     public function editProfile(Request $request)
     {
-        return view('backend.access.profile-edit')
+        return view('backend.access.users.profile-edit')
             ->withLoggedInUser(access()->user());
     }
 
@@ -80,12 +44,6 @@ class DashboardController extends Controller
         $user = User::find($userId);
         $user->first_name = $input['first_name'];
         $user->last_name = $input['last_name'];
-        $user->address = $input['address'];
-        $user->state_id = $input['state_id'];
-        $user->country_id = config('access.constants.default_country');
-        $user->city_id = $input['city_id'];
-        $user->zip_code = $input['zip_code'];
-        $user->ssn = $input['ssn'];
         $user->updated_by = access()->user()->id;
 
         if ($user->save()) {

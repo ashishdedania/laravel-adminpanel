@@ -27,20 +27,20 @@ return [
         ],
 
         'users' => [
-            'confirmation_email'   => 'A new confirmation e-mail has been sent to the address on file.',
-            'created'              => 'The user was successfully created.',
-            'deleted'              => 'The user was successfully deleted.',
-            'deleted_permanently'  => 'The user was deleted permanently.',
-            'restored'             => 'The user was successfully restored.',
-            'session_cleared'      => "The user's session was successfully cleared.",
-            'updated'              => 'The user was successfully updated.',
-            'updated_password'     => "The user's password was successfully updated.",
+            'confirmation_email'  => 'A new confirmation e-mail has been sent to the address on file.',
+            'created'             => 'The user was successfully created.',
+            'deleted'             => 'The user was successfully deleted.',
+            'deleted_permanently' => 'The user was deleted permanently.',
+            'restored'            => 'The user was successfully restored.',
+            'session_cleared'     => "The user's session was successfully cleared.",
+            'updated'             => 'The user was successfully updated.',
+            'updated_password'    => "The user's password was successfully updated.",
         ],
 
-        'cmspages' => [
-            'created' => 'The CMS Page was successfully created.',
-            'deleted' => 'The CMS Page was successfully deleted.',
-            'updated' => 'The CMS Page was successfully updated.',
+        'pages' => [
+            'created' => 'The Page was successfully created.',
+            'deleted' => 'The Page was successfully deleted.',
+            'updated' => 'The Page was successfully updated.',
         ],
 
         'blogcategories' => [

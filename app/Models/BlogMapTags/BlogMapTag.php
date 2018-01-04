@@ -2,20 +2,19 @@
 
 namespace App\Models\BlogMapTags;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class BlogMapTag extends Model
+class BlogMapTag extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table;
+    protected $table = 'blog_map_tags';
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('access.blog_map_tags');
     }
 }

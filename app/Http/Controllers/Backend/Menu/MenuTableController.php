@@ -13,13 +13,10 @@ use Yajra\DataTables\Facades\DataTables;
  */
 class MenuTableController extends Controller
 {
-    /**
-     * @var MenuRepository
-     */
     protected $menus;
 
     /**
-     * @param MenuRepository $menus
+     * @param \App\Repositories\Backend\Menu\MenuRepository $menus
      */
     public function __construct(MenuRepository $menus)
     {
@@ -27,7 +24,7 @@ class MenuTableController extends Controller
     }
 
     /**
-     * @param ManageMenuRequest $request
+     * @param \App\Http\Requests\Backend\Menu\ManageMenuRequest $request
      *
      * @return mixed
      */

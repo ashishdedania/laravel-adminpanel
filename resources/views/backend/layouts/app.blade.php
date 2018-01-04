@@ -5,14 +5,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" sizes="16x16" type="image/png" href="{{route('frontend.index')}}/img/favicon_icon/{{settings()->favicon}}">
+        {{-- <link rel="icon" sizes="16x16" type="image/png" href="{{route('frontend.index')}}/img/favicon_icon/{{settings()->favicon}}"> --}}
         <title>@yield('title', app_name())</title>
 
         <!-- Meta -->
         <meta name="description" content="@yield('meta_description', 'Default Description')">
         <meta name="author" content="@yield('meta_author', 'Viral Solani')">
-        <!--Lato Fonts Included-->
-        <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
         @yield('meta')
 
         <!-- Styles -->
@@ -55,7 +54,9 @@
                 <section class="content-header">
                     @yield('page-header')
                     <!-- Breadcrumbs would render from routes/breadcrumb.php -->
-                    {!! Breadcrumbs::render() !!}
+                    @if(Breadcrumbs::exists())
+                        {!! Breadcrumbs::render() !!}
+                    @endif
                 </section>
 
                 <!-- Main content -->

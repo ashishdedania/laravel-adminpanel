@@ -1,14 +1,11 @@
 <?php
 
 use Carbon\Carbon;
-use Database\TruncateTable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ModulesTableSeeder extends Seeder
 {
-    use TruncateTable;
-
     /**
      * Run the database seeds.
      *
@@ -16,7 +13,7 @@ class ModulesTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->truncate(config('module.table'));
+        DB::table('modules')->truncate();
 
         $modules = [
             [
@@ -62,9 +59,9 @@ class ModulesTableSeeder extends Seeder
                 'created_at'            => Carbon::now(),
             ],
             [
-                'name'                  => trans('labels.backend.cmspages.title'),
-                'url'                   => 'admin.cmspages.index',
-                'view_permission_id'    => 'view-cms-pages',
+                'name'                  => trans('labels.backend.pages.title'),
+                'url'                   => 'admin.pages.index',
+                'view_permission_id'    => 'view-page',
                 'created_by'            => 1,
                 'created_at'            => Carbon::now(),
             ],
@@ -119,6 +116,6 @@ class ModulesTableSeeder extends Seeder
             ],
         ];
 
-        DB::table(config('module.table'))->insert($modules);
+        DB::table('modules')->insert($modules);
     }
 }

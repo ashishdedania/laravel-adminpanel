@@ -5,10 +5,6 @@ namespace App\Repositories\Backend\Menu;
 use App\Exceptions\GeneralException;
 use App\Models\Menu\Menu;
 use App\Repositories\BaseRepository;
-use DB;
-//use App\Events\Backend\CMSPages\CMSPageCreated;
-//use App\Events\Backend\CMSPages\CMSPageDeleted;
-//use App\Events\Backend\CMSPages\CMSPageUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,7 +35,7 @@ class MenuRepository extends BaseRepository
     /**
      * @param array $input
      *
-     * @throws GeneralException
+     * @throws \App\Exceptions\GeneralException
      *
      * @return bool
      */
@@ -49,66 +45,51 @@ class MenuRepository extends BaseRepository
             throw new GeneralException(trans('exceptions.backend.menus.already_exists'));
         }
 
-        $menu = self::MODEL;
-        $menu = new $menu();
-        $menu->name = $input['name'];
-        $menu->type = $input['type'];
-        $menu->items = $input['items'];
-        $menu->created_by = access()->user()->id;
-        DB::transaction(function () use ($input, $menu) {
-            if ($menu->save()) {
-                //event(new CMSPageCreated($menu));
-                return true;
-            }
+        $input['created_by'] = access()->user()->id;
 
-            throw new GeneralException(trans('exceptions.backend.menus.create_error'));
-        });
+        if (Menu::create($input)) {
+            return true;
+        }
+
+        throw new GeneralException(trans('exceptions.backend.menus.create_error'));
     }
 
     /**
-     * @param Model $permission
+     * @param \App\Models\Menu\Menu $menu
      * @param  $input
      *
-     * @throws GeneralException
+     * @throws \App\Exceptions\GeneralException
      *
      * return bool
      */
-    public function update(Model $menu, array $input)
+    public function update(Menu $menu, array $input)
     {
         if ($this->query()->where('name', $input['name'])->where('id', '!=', $menu->id)->first()) {
             throw new GeneralException(trans('exceptions.backend.menus.already_exists'));
         }
-        $menu->name = $input['name'];
-        $menu->type = $input['type'];
-        $menu->items = $input['items'];
-        $menu->updated_by = access()->user()->id;
 
-        DB::transaction(function () use ($menu, $input) {
-            if ($menu->save()) {
-                //event(new CMSPageUpdated($menu));
-                return true;
-            }
+        $input['updated_by'] = access()->user()->id;
 
-            throw new GeneralException(trans('exceptions.backend.menus.update_error'));
-        });
+        if ($menu->update($input)) {
+            return true;
+        }
+
+        throw new GeneralException(trans('exceptions.backend.menus.update_error'));
     }
 
     /**
-     * @param Model $cmspage
+     * @param \App\Models\Menu\Menu $menu
      *
-     * @throws GeneralException
+     * @throws \App\Exceptions\GeneralException
      *
      * @return bool
      */
-    public function delete(Model $menu)
+    public function delete(Menu $menu)
     {
-        DB::transaction(function () use ($menu) {
-            if ($menu->delete()) {
-                //event(new CMSPageDeleted($menu));
-                return true;
-            }
+        if ($menu->delete()) {
+            return true;
+        }
 
-            throw new GeneralException(trans('exceptions.backend.menus.delete_error'));
-        });
+        throw new GeneralException(trans('exceptions.backend.menus.delete_error'));
     }
 }

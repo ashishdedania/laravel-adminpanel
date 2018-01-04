@@ -2,14 +2,20 @@
 
 namespace App\Models\EmailTemplates;
 
+use App\Models\BaseModel;
 use App\Models\EmailTemplates\Traits\Attribute\EmailTemplateAttribute;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EmailTemplate extends Model
+class EmailTemplate extends BaseModel
 {
-    use EmailTemplateAttribute,
-        SoftDeletes;
+    use ModelTrait,
+        SoftDeletes,
+        EmailTemplateAttribute {
+            // EmailTemplateAttribute::getEditButtonAttribute insteadof ModelTrait;
+        }
+
+    protected $guarded = ['id'];
 
     /**
      * The database table used by the model.
@@ -21,6 +27,6 @@ class EmailTemplate extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('access.email_templates_table');
+        $this->table = config('module.email_templates.table');
     }
 }

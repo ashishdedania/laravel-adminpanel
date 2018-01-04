@@ -12,12 +12,12 @@
 @section('content')
     {{ Form::model($blogtag, ['route' => ['admin.blogtags.update', $blogtag], 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'PATCH', 'id' => 'edit-role']) }}
 
-        <div class="box box-success">
+        <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('labels.backend.blogtags.edit') }}</h3>
 
                 <div class="box-tools pull-right">
-                    @include('backend.includes.partials.blogtags-header-buttons')
+                    @include('backend.blogtags.partials.blogtags-header-buttons')
                 </div><!--box-tools pull-right-->
             </div><!-- /.box-header -->
 

@@ -2,9 +2,9 @@
 
 namespace App\Models\EmailTemplatePlaceholders;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class EmailTemplatePlaceholder extends Model
+class EmailTemplatePlaceholder extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -16,6 +16,6 @@ class EmailTemplatePlaceholder extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('access.email_template_placeholders_table');
+        $this->table = config('module.email_templates.placeholders_table');
     }
 }

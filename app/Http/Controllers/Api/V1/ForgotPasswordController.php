@@ -1,64 +1,55 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Api\V1\Requests\ForgotPasswordRequest;
-use App\Http\Controllers\Controller;
-use App\Mail\ForgotPasswordMail;
-use App\Repositories\Api\User\PasswordResetRepository;
-use App\Repositories\Api\User\UserRepository;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Password;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Models\User\User;
+use App\Notifications\Frontend\Auth\UserNeedsPasswordReset;
+use App\Repositories\Frontend\Access\User\UserRepository;
+use Illuminate\Http\Request;
+use Validator;
 
-/**
- * Class ForgotPasswordController.
- */
-class ForgotPasswordController extends Controller
+class ForgotPasswordController extends APIController
 {
     /**
-     * @var UserRepository
-     */
-    protected $user;
-
-    /**
-     * ForgotPasswordController constructor.
+     * __construct.
      *
-     * @param UserRepository $user
+     * @param $repository
      */
-    public function __construct(UserRepository $user, PasswordResetRepository $passwordreset)
+    public function __construct(UserRepository $repository)
     {
-        $this->user = $user;
-        $this->passwordreset = $passwordreset;
+        $this->repository = $repository;
     }
 
     /**
-     * Recovery password api.
+     * Send a reset link to the given user.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function forgotpassword(ForgotPasswordRequest $request)
+    public function sendResetLinkEmail(Request $request)
     {
-        $check_user = $this->user->checkUser($request->get('email'));
-        if (!(empty($check_user))) {
-            $otp = $this->user->generateOTP();
-            $attributes = [
-                    'email'      => $request->get('email'),
-                    'token'      => $otp,
-                    'created_at' => Carbon::now(),
-            ];
-            $check_reset = $this->passwordreset->getByEmail($request->get('email'));
-            if (empty($check_reset)) {
-                $token = $this->passwordreset->create($attributes);
-            } else {
-                $token = $this->passwordreset->update($attributes);
-            }
-            $forgot_mail = \Mail::to($request->get('email'))->send(new ForgotPasswordMail($otp));
+        $validation = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
 
-            return response()->json([
-                               'status' => 'ok',
-                               'data'   => ['token' => $otp],
-            ], 200);
+        if ($validation->fails()) {
+            return $this->throwValidation($validation->messages()->first());
         }
 
-        throw new HttpException(500, trans('validation.api.forgotpassword.email_not_valid'));
+        $user = $this->repository->findByEmail($request->get('email'));
+
+        if (!$user) {
+            return $this->respondNotFound(trans('api.messages.forgot_password.validation.email_not_found'));
+        }
+
+        $token = $this->repository->saveToken();
+
+        $user->notify(new UserNeedsPasswordReset($token));
+
+        return $this->respond([
+            'status'    => 'ok',
+            'message'   => trans('api.messages.forgot_password.success'),
+        ]);
     }
 }

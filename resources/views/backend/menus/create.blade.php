@@ -12,7 +12,7 @@
 @section('content')
     {{ Form::open(['route' => 'admin.menus.store', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'create-menu', 'files' => false]) }}
 
-    <div class="box box-success">
+    <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">{{ trans('labels.backend.menus.create') }}</h3>
 

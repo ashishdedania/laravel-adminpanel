@@ -12,7 +12,7 @@
 @section('content')
     {{ Form::open(['route' => 'admin.access.role.store', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'post', 'id' => 'create-role']) }}
 
-        <div class="box box-success">
+        <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('labels.backend.access.roles.create') }}</h3>
 
@@ -60,12 +60,12 @@
                     {{ Form::label('sort', trans('validation.attributes.backend.access.roles.sort'), ['class' => 'col-lg-2 control-label']) }}
 
                     <div class="col-lg-10">
-                        {{ Form::text('sort', ($role_count+1), ['class' => 'form-control box-size', 'placeholder' => trans('validation.attributes.backend.access.roles.sort')]) }}
+                        {{ Form::text('sort', ($roleCount+1), ['class' => 'form-control box-size', 'placeholder' => trans('validation.attributes.backend.access.roles.sort')]) }}
                     </div><!--col-lg-10-->
                 </div><!--form control-->
 
                 <div class="form-group">
-                    {{ Form::label('status', trans('validation.attributes.backend.cmspages.is_active'), ['class' => 'col-lg-2 control-label']) }}
+                    {{ Form::label('status', trans('validation.attributes.backend.access.roles.active'), ['class' => 'col-lg-2 control-label']) }}
 
                     <div class="col-lg-10">
                         <div class="control-group">
@@ -90,7 +90,7 @@
     {{ Html::script('js/backend/access/roles/script.js') }}
      <script type="text/javascript">
         $(document).ready(function() {
-            FinBuilders.Access.init();
+            Backend.Access.init();
         });
     </script>
 @endsection

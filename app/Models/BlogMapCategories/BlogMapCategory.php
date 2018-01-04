@@ -2,20 +2,19 @@
 
 namespace App\Models\BlogMapCategories;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class BlogMapCategory extends Model
+class BlogMapCategory extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table;
+    protected $table = 'blog_map_categories';
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('access.blog_map_categories_table');
     }
 }

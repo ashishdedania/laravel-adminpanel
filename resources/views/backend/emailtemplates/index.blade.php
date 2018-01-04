@@ -7,10 +7,10 @@
 @endsection
 
 @section('content')
-    <div class="box box-success">
+    <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">{{ trans('labels.backend.emailtemplates.management') }}</h3>
-            
+
             <div class="box-tools pull-right">
                 <div class="btn-group">
                   <button type="button" class="btn btn-warning btn-flat dropdown-toggle" data-toggle="dropdown">Export
@@ -75,13 +75,13 @@
         <div class="box-body">
             {{-- {!! history()->renderType('EmailTemplate') !!} --}}
         </div><!-- /.box-body -->
-    </div><!--box box-success-->
+    </div><!--box box-info-->
 @endsection
 
 @section('after-scripts')
     {{-- For DataTables --}}
     {{ Html::script(mix('js/dataTable.js')) }}
-    
+
     <script>
         $(function() {
             var dataTable = $('#emailtemplates-table').dataTable({
@@ -92,11 +92,11 @@
                     type: 'post'
                 },
                 columns: [
-                    {data: 'title', name: '{{config('access.email_templates_table')}}.title'},
-                    {data: 'subject', name: '{{config('access.email_templates_table')}}.subject'},
-                    {data: 'status', name: '{{config('access.email_templates_table')}}.status'},
-                    {data: 'created_at', name: '{{config('access.email_templates_table')}}.created_at'},
-                    {data: 'updated_at', name: '{{config('access.email_templates_table')}}.updated_at'},
+                    {data: 'title', name: '{{config('module.email_templates.table')}}.title'},
+                    {data: 'subject', name: '{{config('module.email_templates.table')}}.subject'},
+                    {data: 'status', name: '{{config('module.email_templates.table')}}.status'},
+                    {data: 'created_at', name: '{{config('module.email_templates.table')}}.created_at'},
+                    {data: 'updated_at', name: '{{config('module.email_templates.table')}}.updated_at'},
                     {data: 'actions', name: 'actions', searchable: false, sortable: false}
                 ],
                 order: [[3, "asc"]],
@@ -113,7 +113,7 @@
                 }
             });
 
-            FinBuilders.DataTableSearch.init(dataTable);
+            Backend.DataTableSearch.init(dataTable);
         });
     </script>
 @endsection

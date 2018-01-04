@@ -2,12 +2,16 @@
 
 @section ('title', trans('labels.backend.menus.management'))
 
+@section('after-styles')
+    {{ Html::style("css/backend/plugin/datatables/dataTables.bootstrap.min.css") }}
+@endsection
+
 @section('page-header')
     <h1>{{ trans('labels.backend.menus.management') }}</h1>
 @endsection
 
 @section('content')
-    <div class="box box-success">
+    <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">{{ trans('labels.backend.menus.management') }}</h3>
 
@@ -59,8 +63,8 @@
 
 @section('after-scripts')
     {{-- For DataTables --}}
-    {{ Html::script(mix('js/dataTable.js')) }}
-    
+    @include('includes.datatables')
+
     <script>
         $(function() {
             var dataTable = $('#menus-table').dataTable({
@@ -90,7 +94,7 @@
                 }
             });
 
-            FinBuilders.DataTableSearch.init(dataTable);
+            Backend.DataTableSearch.init(dataTable);
         });
     </script>
 @endsection

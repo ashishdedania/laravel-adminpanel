@@ -7,5 +7,5 @@ Route::group(['namespace' => 'Menu'], function () {
     //For DataTables
     Route::post('menus/get', 'MenuTableController')->name('menus.get');
     // for Model Forms
-    Route::get('menus/get-form/{name?}', 'MenuController@getForm')->name('menus.getform');
+    Route::get('menus/get-form/{name?}', 'MenuFormController@create')->name('menus.getform');
 });

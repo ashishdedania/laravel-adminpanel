@@ -2,13 +2,18 @@
 
 namespace App\Models\Faqs;
 
+use App\Models\BaseModel;
 use App\Models\Faqs\Traits\Attribute\FaqAttribute;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Faq extends Model
+class Faq extends BaseModel
 {
-    use FaqAttribute, SoftDeletes;
+    use ModelTrait,
+        SoftDeletes,
+        FaqAttribute {
+            // FaqAttribute::getEditButtonAttribute insteadof ModelTrait;
+        }
 
     /**
      * The database table used by the model.
@@ -27,6 +32,6 @@ class Faq extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('access.faqs_table');
+        $this->table = config('module.faqs.table');
     }
 }

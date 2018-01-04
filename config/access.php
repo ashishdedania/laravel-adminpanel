@@ -61,26 +61,6 @@ return [
     'cities_table' => 'cities',
 
     /*
-     * cmspages table used to store cmspages
-     */
-    'cms_pages_table' => 'cms_pages',
-
-    /*
-     * email template placeholders table used to store email template placeholders
-     */
-    'email_template_placeholders_table' => 'email_template_placeholders',
-
-    /*
-     * email template types table used to store email template types
-     */
-    'email_template_types_table' => 'email_template_types',
-
-    /*
-     * Email templates table used to store Email templates
-     */
-    'email_templates_table' => 'email_templates',
-
-    /*
      * Email templates table used to store Email templates
      */
     'settings_table' => 'settings',
@@ -89,31 +69,6 @@ return [
      * History Types table used to store History Type
      */
     'history_types_table' => 'history_types',
-
-    /*
-     * Blog Catagories table used to store Blog Catagory
-     */
-    'blog_categories_table' => 'blog_categories',
-
-    /*
-     * Blog Tags table used to store Blog Tag
-     */
-    'blog_tags_table' => 'blog_tags',
-
-    /*
-     * Blog Tags table used to store Blog Tag
-     */
-    'blogs_table' => 'blogs',
-
-    /*
-     * Blog Tags table used to store Blog Tag
-     */
-    'blog_map_categories_table' => 'blog_map_categories',
-
-    /*
-     * Blog Tags table used to store Blog Tag
-     */
-    'blog_map_tags_table' => 'blog_map_tags',
 
     /*
      * Notifications table used to store user notification

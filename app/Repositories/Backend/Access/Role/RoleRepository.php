@@ -8,7 +8,6 @@ use App\Events\Backend\Access\Role\RoleUpdated;
 use App\Exceptions\GeneralException;
 use App\Models\Access\Role\Role;
 use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -53,7 +52,7 @@ class RoleRepository extends BaseRepository
                 DB::raw("GROUP_CONCAT( DISTINCT permissions.display_name SEPARATOR '<br/>') as permission_name"),
                 DB::raw('(SELECT COUNT(role_user.id) FROM role_user LEFT JOIN users ON role_user.user_id = users.id WHERE role_user.role_id = roles.id AND users.deleted_at IS NULL) AS userCount'),
             ])
-            ->groupBy('roles.id');
+            ->groupBy(config('access.roles_table').'.id', config('access.roles_table').'.name', config('access.roles_table').'.all', config('access.roles_table').'.sort');
     }
 
     /**
@@ -128,7 +127,7 @@ class RoleRepository extends BaseRepository
      *
      * @return bool
      */
-    public function update(Model $role, array $input)
+    public function update($role, array $input)
     {
         //See if the role has all access, administrator always has all access
         if ($role->id == 1) {
